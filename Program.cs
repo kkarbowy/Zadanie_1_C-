@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
+
 class Program
 {
     static readonly int[] ZADANIA_OPCJE = { 1, 2, 3 };

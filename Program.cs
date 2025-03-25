@@ -3,6 +3,7 @@ class Program
     static readonly string[] ZADANIA_OPCJE = { "1", "2", "3" };
     static readonly string[] DZIALANIA_OPCJE = { "+", "-", "*", "/" };
     static readonly string[] KONWERSJE_OPCJE = { "f", "c" };
+    static readonly int[] OCENY_OPCJE = { 1, 2, 3, 4, 5, 6 };
 
     static double Kalkulator(double liczba1, double liczba2, string dzialanie)
     {
@@ -24,6 +25,11 @@ class Program
             "f" => (temperatura - 32) / 1.8,
             _ => throw new ArgumentException("Niepoprawny kierunek konwersji!")
         };
+    }
+
+    static double ObliczSrednia(List<int> listaOcen)
+    {
+        return listaOcen.Average();
     }    
 
     static void Main()
@@ -64,6 +70,25 @@ class Program
                 string przelicznikString = przelicznik == "c" ? "Fahrenheita" : "Celsjusza";
                 double wynik2 = KonwerterTemperatur(przelicznik, temperatura);
                 Console.WriteLine($"Otrzymany wynik: {wynik2} stopni {przelicznikString}");
+                break;
+                
+            case "3":
+                Console.WriteLine("Wpisz ile ocen podasz:");
+                int iloscOcen = int.Parse(Console.ReadLine());
+                List<int> listaOcen = new List<int>();
+                for (int i = 0; i < iloscOcen; i++)
+                {
+                    Console.WriteLine($"Podaj ocenę numer {i + 1}:");
+                    int ocena = int.Parse(Console.ReadLine());
+                    if (!OCENY_OPCJE.Contains(ocena))
+                    {
+                        throw new ArgumentException("Wprowadzono niepoprawną wartość!");
+                    }
+                    listaOcen.Add(ocena);
+                }
+                double srednia = ObliczSrednia(listaOcen);
+                Console.WriteLine($"Średnia ocen ucznia: {srednia}");
+                Console.WriteLine(srednia >= 3.0 ? "Uczeń zdał" : "Uczeń nie zdał");
                 break;
         }
     }

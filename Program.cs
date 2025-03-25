@@ -2,6 +2,7 @@ class Program
 {
     static readonly string[] ZADANIA_OPCJE = { "1", "2", "3" };
     static readonly string[] DZIALANIA_OPCJE = { "+", "-", "*", "/" };
+    static readonly string[] KONWERSJE_OPCJE = { "f", "c" };
 
     static double Kalkulator(double liczba1, double liczba2, string dzialanie)
     {
@@ -14,6 +15,16 @@ class Program
             _ => throw new ArgumentException("Niepoprawne działanie!")
         };
     }
+
+    static double KonwerterTemperatur(string kierunekKonwersji, double temperatura)
+    {
+        return kierunekKonwersji switch
+        {
+            "c" => temperatura * 1.8 + 32,
+            "f" => (temperatura - 32) / 1.8,
+            _ => throw new ArgumentException("Niepoprawny kierunek konwersji!")
+        };
+    }    
 
     static void Main()
     {
@@ -39,6 +50,20 @@ class Program
                 }
                 double wynik = Kalkulator(liczba1, liczba2, dzialanie);
                 Console.WriteLine($"Otrzymany wynik: {wynik}");
+                break;
+
+            case "2":
+                Console.WriteLine("Wybierz konwersję ['c' - Celsjusz -> Fahrenheit, 'f' - Fahrenheit -> Celsjusz]:");
+                string przelicznik = Console.ReadLine();
+                Console.WriteLine("Wpisz wartość temperatury:");
+                double temperatura = double.Parse(Console.ReadLine());
+                if (!KONWERSJE_OPCJE.Contains(przelicznik))
+                {
+                    throw new ArgumentException("Wprowadzono niepoprawną wartość!");
+                }
+                string przelicznikString = przelicznik == "c" ? "Fahrenheita" : "Celsjusza";
+                double wynik2 = KonwerterTemperatur(przelicznik, temperatura);
+                Console.WriteLine($"Otrzymany wynik: {wynik2} stopni {przelicznikString}");
                 break;
         }
     }

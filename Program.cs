@@ -1,49 +1,57 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
 class Program
 {
-    static readonly string[] ZADANIA_OPCJE = { "1", "2", "3" };
+    static readonly int[] ZADANIA_OPCJE = { 1, 2, 3 };
     static readonly string[] DZIALANIA_OPCJE = { "+", "-", "*", "/" };
     static readonly string[] KONWERSJE_OPCJE = { "f", "c" };
     static readonly int[] OCENY_OPCJE = { 1, 2, 3, 4, 5, 6 };
 
     static double Kalkulator(double liczba1, double liczba2, string dzialanie)
     {
-        return dzialanie switch
+        switch (dzialanie)
         {
-            "+" => liczba1 + liczba2,
-            "-" => liczba1 - liczba2,
-            "*" => liczba1 * liczba2,
-            "/" => liczba2 == 0 ? throw new DivideByZeroException("Nie można dzielić przez zero!") : liczba1 / liczba2,
-            _ => throw new ArgumentException("Niepoprawne działanie!")
-        };
+            case "+": return liczba1 + liczba2;
+            case "-": return liczba1 - liczba2;
+            case "*": return liczba1 * liczba2;
+            case "/":
+                if (liczba2 == 0)
+                    throw new DivideByZeroException("Nie można dzielić przez zero!");
+                return liczba1 / liczba2;
+            default:
+                throw new ArgumentException("Niepoprawne działanie!");
+        }
     }
 
     static double KonwerterTemperatur(string kierunekKonwersji, double temperatura)
     {
-        return kierunekKonwersji switch
+        switch (kierunekKonwersji)
         {
-            "c" => temperatura * 1.8 + 32,
-            "f" => (temperatura - 32) / 1.8,
-            _ => throw new ArgumentException("Niepoprawny kierunek konwersji!")
-        };
+            case "c": return temperatura * 1.8 + 32;
+            case "f": return (temperatura - 32) / 1.8;
+            default:
+                throw new ArgumentException("Niepoprawny kierunek konwersji!");
+        }
     }
 
     static double ObliczSrednia(List<int> listaOcen)
     {
         return listaOcen.Average();
-    }    
+    }
 
     static void Main()
     {
         Console.WriteLine("Wybierz zadanie wpisując odpowiednią cyfrę: 1 - kalkulator, 2 - konwerter temperatur, 3 - średnia ocen ucznia.");
-        string wybraneZadanie = Console.ReadLine();
-        if (!ZADANIA_OPCJE.Contains(wybraneZadanie))
+        if (!int.TryParse(Console.ReadLine(), out int wybraneZadanie) || !ZADANIA_OPCJE.Contains(wybraneZadanie))
         {
             throw new ArgumentException("Wprowadzono niepoprawną wartość!");
         }
 
         switch (wybraneZadanie)
         {
-            case "1":
+            case 1:
                 Console.WriteLine("Wpisz wartość pierwszej liczby:");
                 double liczba1 = double.Parse(Console.ReadLine());
                 Console.WriteLine("Wpisz wartość drugiej liczby:");
@@ -54,11 +62,10 @@ class Program
                 {
                     throw new ArgumentException("Wprowadzono niepoprawną wartość!");
                 }
-                double wynik = Kalkulator(liczba1, liczba2, dzialanie);
-                Console.WriteLine($"Otrzymany wynik: {wynik}");
+                Console.WriteLine($"Otrzymany wynik: {Kalkulator(liczba1, liczba2, dzialanie)}");
                 break;
-
-            case "2":
+            
+            case 2:
                 Console.WriteLine("Wybierz konwersję ['c' - Celsjusz -> Fahrenheit, 'f' - Fahrenheit -> Celsjusz]:");
                 string przelicznik = Console.ReadLine();
                 Console.WriteLine("Wpisz wartość temperatury:");
@@ -68,11 +75,10 @@ class Program
                     throw new ArgumentException("Wprowadzono niepoprawną wartość!");
                 }
                 string przelicznikString = przelicznik == "c" ? "Fahrenheita" : "Celsjusza";
-                double wynik2 = KonwerterTemperatur(przelicznik, temperatura);
-                Console.WriteLine($"Otrzymany wynik: {wynik2} stopni {przelicznikString}");
+                Console.WriteLine($"Otrzymany wynik: {KonwerterTemperatur(przelicznik, temperatura)} stopni {przelicznikString}");
                 break;
-                
-            case "3":
+            
+            case 3:
                 Console.WriteLine("Wpisz ile ocen podasz:");
                 int iloscOcen = int.Parse(Console.ReadLine());
                 List<int> listaOcen = new List<int>();
